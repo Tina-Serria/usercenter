@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.youphye.usercenter.mapper.UserMapper">
+
+    <resultMap id="BaseResultMap" type="com.youphye.usercenter.pojo.User">
+            <id property="id" column="id" jdbcType="BIGINT"/>
+            <result property="userAccount" column="user_account" jdbcType="VARCHAR"/>
+            <result property="userName" column="user_name" jdbcType="VARCHAR"/>
+            <result property="userPassword" column="user_password" jdbcType="VARCHAR"/>
+            <result property="userGender" column="user_gender" jdbcType="TINYINT"/>
+            <result property="userEmail" column="user_email" jdbcType="VARCHAR"/>
+            <result property="userPhone" column="user_phone" jdbcType="VARCHAR"/>
+            <result property="userStatus" column="user_status" jdbcType="TINYINT"/>
+            <result property="userRole" column="user_role" jdbcType="TINYINT"/>
+            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+            <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+            <result property="deleted" column="deleted" jdbcType="TINYINT"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,user_account,user_name,
+        user_password,user_gender,user_email,
+        user_phone,user_status,user_role,
+        create_time,update_time,deleted
+    </sql>
+</mapper>
