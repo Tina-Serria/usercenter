@@ -1,8 +1,9 @@
 package com.youphye.usercenter.controller;
 
+import com.youphye.usercenter.common.Response;
+import com.youphye.usercenter.pojo.User;
 import com.youphye.usercenter.service.UserService;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 
@@ -19,4 +20,10 @@ import javax.annotation.Resource;
 public class UserController {
 	@Resource
 	UserService userService;
+
+	@PostMapping("/register")
+	public Response<User> register(@RequestBody String userName, String userPassword, String repeatPassword) {
+		User user = userService.register(userName, userPassword, repeatPassword);
+		return Response.success(user);
+	}
 }

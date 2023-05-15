@@ -74,7 +74,6 @@ public class UserDataUtil {
 		}
 		return typeCount > 1;
 	}
-
 	/**
 	 * @Description 检验邮箱
 	 * @param email 邮箱
@@ -92,4 +91,5 @@ public class UserDataUtil {
 	public static boolean checkPhone(String phone) {
 		return ReUtil.isMatch(PHONE, phone);
 	}
+
 }

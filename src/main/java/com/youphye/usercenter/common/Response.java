@@ -1,5 +1,6 @@
 package com.youphye.usercenter.common;
 
+import com.youphye.usercenter.exception.BusinessException;
 import lombok.Data;
 
 /**
@@ -24,15 +25,40 @@ public class Response<T> {
 		this.data = data;
 	}
 
+	public Response(Integer code, String message, String description, T data) {
+		this.code = code;
+		this.message = message;
+		this.description = description;
+		this.data = data;
+	}
+
+	/**
+	 * @Description 业务成功的返回
+	 * @param data 数据对象
+	 * @return Response<T>
+	 */
 	public static <T> Response<T> success(T data) {
 		return new Response<>(StatusCode.BUSINESS_SUCCESS, data);
 	}
 
-	public static <T> Response<T> systemError() {
-		return new Response<>(StatusCode.SYSTEM_ERROR, null);
+
+	/**
+	 * @Description  业务失败的返回
+	 * @param businessException 抛出的业务失败异常
+	 * @return Response
+	 */
+	public static Response failed(BusinessException businessException) {
+		return new Response<>(businessException.getCode(), businessException.getMessage(), businessException.getDescription(), null);
 	}
 
-	public static <T> Response<T> businessError(StatusCode statusCode) {
-		return new Response<>(statusCode, null);
+	/**
+	 * @Description 发送RuntimeException即系统错误时的返回方法
+	 * @param description 异常的message
+	 * @return Response 错误对象
+	 */
+	public static Response error(String description) {
+		Response response = new Response<>(StatusCode.SYSTEM_ERROR, null);
+		response.setDescription(description);
+		return response;
 	}
 }

@@ -23,7 +23,7 @@ public class User implements Serializable {
     /**
      * 账号
      */
-    private String userAccount;
+    private Long userAccount;
 
     /**
      * 用户名

@@ -16,5 +16,5 @@ public interface UserService extends IService<User> {
 	 * @param repeatPassword  重复密码
 	 * @return User 用户对象
 	 */
-		public User register(String userName, String userPassword,String repeatPassword);
+	public User register(String userName, String userPassword,String repeatPassword);
 }

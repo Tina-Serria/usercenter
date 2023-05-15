@@ -13,4 +13,8 @@ public class MyConstant {
 		密码加密所用的盐
 	 */
 	public static final String SALT = "youphye";
+	/*
+		账号从这里开始自增，其他的账号保留。
+	 */
+	public static final Long USER_ACCOUNT_START = 100000L;
 }

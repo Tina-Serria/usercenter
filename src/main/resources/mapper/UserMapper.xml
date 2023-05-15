@@ -6,7 +6,7 @@
 
     <resultMap id="BaseResultMap" type="com.youphye.usercenter.pojo.User">
             <id property="id" column="id" jdbcType="BIGINT"/>
-            <result property="userAccount" column="user_account" jdbcType="VARCHAR"/>
+            <result property="userAccount" column="user_account" jdbcType="BIGINT"/>
             <result property="userName" column="user_name" jdbcType="VARCHAR"/>
             <result property="userPassword" column="user_password" jdbcType="VARCHAR"/>
             <result property="userGender" column="user_gender" jdbcType="TINYINT"/>
