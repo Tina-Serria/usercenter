@@ -33,6 +33,7 @@ public class User implements Serializable {
     /**
      * 密码
      */
+    @TableField(select = false)
     private String userPassword;
 
     /**

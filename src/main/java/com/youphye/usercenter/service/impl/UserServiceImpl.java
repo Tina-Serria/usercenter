@@ -1,5 +1,6 @@
 package com.youphye.usercenter.service.impl;
 
+import cn.hutool.crypto.SecureUtil;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.youphye.usercenter.pojo.User;
 import com.youphye.usercenter.service.UserService;
@@ -15,6 +16,11 @@ import org.springframework.stereotype.Service;
 public class UserServiceImpl extends ServiceImpl<UserMapper, User>
     implements UserService {
 
+	@Override
+	public User register(String userName, String userPassword, String repeatPassword) {
+		SecureUtil.md5();
+		return null;
+	}
 }
 
 
