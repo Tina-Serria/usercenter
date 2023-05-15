@@ -8,7 +8,7 @@ package com.youphye.usercenter.common;
  * @Create 2023/5/15 16:35
  * @Version 1.0
  */
-public class Constant {
+public class MyConstant {
 	/*
 		密码加密所用的盐
 	 */

@@ -18,6 +18,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
 
 	@Override
 	public User register(String userName, String userPassword, String repeatPassword) {
+
 		SecureUtil.md5();
 		return null;
 	}
