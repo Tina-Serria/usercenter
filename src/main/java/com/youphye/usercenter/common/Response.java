@@ -33,17 +33,18 @@ public class Response<T> {
 	}
 
 	/**
-	 * @Description 业务成功的返回
-	 * @param data 数据对象
+	 * @Description 因为执行成功
+	 * @param statusCode 返回业务成功相关信息
+	 * @param data 返回的数据
 	 * @return Response<T>
 	 */
-	public static <T> Response<T> success(T data) {
-		return new Response<>(StatusCode.BUSINESS_SUCCESS, data);
+	public static <T> Response<T> success(StatusCode statusCode, T data) {
+		return new Response<>(statusCode, data);
 	}
 
 
 	/**
-	 * @Description  业务失败的返回
+	 * @Description 业务失败的返回
 	 * @param businessException 抛出的业务失败异常
 	 * @return Response
 	 */
@@ -53,12 +54,9 @@ public class Response<T> {
 
 	/**
 	 * @Description 发送RuntimeException即系统错误时的返回方法
-	 * @param description 异常的message
 	 * @return Response 错误对象
 	 */
-	public static Response error(String description) {
-		Response response = new Response<>(StatusCode.SYSTEM_ERROR, null);
-		response.setDescription(description);
-		return response;
+	public static Response error() {
+		return new Response<>(StatusCode.SYSTEM_ERROR, null);
 	}
 }

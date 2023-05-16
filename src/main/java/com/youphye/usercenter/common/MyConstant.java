@@ -17,4 +17,7 @@ public class MyConstant {
 		账号从这里开始自增，其他的账号保留。
 	 */
 	public static final Long USER_ACCOUNT_START = 100000L;
+	public static final String SUCCESS = "执行成功";
+	public static final String FAILED = "执行失败";
+	public static final String ERROR = "系统错误";
 }

@@ -63,15 +63,50 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 	}
 
 	@Override
+	public User login(Long userAccount, String userPassword) {
+		// 保留账号无法登录
+		if (userAccount < USER_ACCOUNT_START) {
+			throw new BusinessException(USER_LOGIN_FAILED);
+		}
+		// 不能为空，或者null或者“”
+		if (UserDataUtil.hasBlank(userPassword)) {
+			throw new BusinessException(PARAM_NULL);
+		}
+		// 密码需要符合规则
+		if (UserDataUtil.checkUserPassword(userPassword)) {
+			throw new BusinessException(USER_LOGIN_FAILED);
+		}
+		LambdaQueryWrapper<User> lambdaQueryWrapper = new LambdaQueryWrapper<>();
+		lambdaQueryWrapper
+				.eq(User::getUserAccount, userAccount)
+				.eq(User::getUserPassword, UserDataUtil.md5(userPassword));
+		User user = this.getOne(lambdaQueryWrapper);
+		if(user == null){
+			throw new BusinessException(USER_LOGIN_FAILED);
+		}
+		return user;
+	}
+
+	@Override
+	public Boolean logout(Long userAccount) {
+		return true;
+	}
+
+	@Override
 	public User select(Long userAccount) {
 		// USER_ACCOUNT_START：100000之前的账号保留，因此不合法。
 		if (userAccount < USER_ACCOUNT_START) {
-			throw new BusinessException(USER_ACCOUNT_ILLEGAL);
+			return null;
 		}
 		LambdaQueryWrapper<User> lambdaQueryWrapper = new LambdaQueryWrapper<>();
 		lambdaQueryWrapper.eq(User::getUserAccount, userAccount);
 		// 返回如果是null 表示没有用户
 		return this.getOne(lambdaQueryWrapper);
+	}
+
+	@Override
+	public Boolean delete(Long userAccount) {
+		return null;
 	}
 }
 

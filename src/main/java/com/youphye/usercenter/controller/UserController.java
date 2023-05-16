@@ -1,10 +1,10 @@
 package com.youphye.usercenter.controller;
 
 import com.youphye.usercenter.common.Response;
+import com.youphye.usercenter.common.StatusCode;
 import com.youphye.usercenter.pojo.User;
 import com.youphye.usercenter.service.UserService;
 import lombok.extern.slf4j.Slf4j;
-import lombok.extern.slf4j.XSlf4j;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -24,14 +24,15 @@ public class UserController {
 	@Resource
 	UserService userService;
 
-	@PostMapping
+	@PostMapping("/register")
 	public Response<User> userRegister(String userName, String userPassword, String repeatPassword) {
 		User user = userService.register(userName, userPassword, repeatPassword);
-		return Response.success(user);
+		return Response.success(StatusCode.REGISTER_SUCCESS,user);
 	}
-	@PostMapping
+	@PostMapping("/login")
 	public Response userLogin(String userAccount, String userPassword) {
-		return Response.success(true);
+
+		return Response.success(StatusCode.LOGIN_SUCCESS,true);
 	}
 
 	@GetMapping("/{userAccount}")

@@ -9,13 +9,15 @@ package com.youphye.usercenter.common;
  * @Version 1.0
  */
 public enum StatusCode {
-	BUSINESS_SUCCESS(40000, "执行成功", "执行成功"),
-	PARAM_NULL(40100,"执行失败","用户名和密码不能为空"),
-	USERNAME_ILLEGAL(40200,"执行失败","用户名长度应为4-32位，不能包含特殊字符"),
-	PASSWORD_DIFFERENT(40300,"执行失败","两次输入的密码不同"),
-	PASSWORD_ILLEGAL(40400,"执行失败","密码长度应为8-32位，且至少包含数字，字母，特殊字符中的两种"),
-	USER_ACCOUNT_ILLEGAL(40500,"执行失败","账号不存在"),
-	SYSTEM_ERROR(50100,"系统错误","");
+	REGISTER_SUCCESS(40000, MyConstant.SUCCESS, "注册成功"),
+	LOGIN_SUCCESS(40001, MyConstant.SUCCESS, "登录成功"),
+	SELECT_SUCCESS(40002, MyConstant.SUCCESS, "查询成功"),
+	PARAM_NULL(40100, MyConstant.FAILED, "用户名和密码不能为空"),
+	USERNAME_ILLEGAL(40200, MyConstant.FAILED, "用户名长度应为4-32位，不能包含特殊字符"),
+	PASSWORD_DIFFERENT(40201, MyConstant.FAILED, "两次输入的密码不同"),
+	PASSWORD_ILLEGAL(40202, MyConstant.FAILED, "密码长度应为8-32位，且至少包含数字，字母，特殊字符中的两种"),
+	USER_LOGIN_FAILED(40203, MyConstant.FAILED, "账号或密码错误"),
+	SYSTEM_ERROR(50100, MyConstant.ERROR, "网络环境异常");
 	private final Integer code;
 	private final String message;
 	private final String description;
