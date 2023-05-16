@@ -17,4 +17,11 @@ public interface UserService extends IService<User> {
 	 * @return User 用户对象
 	 */
 	public User register(String userName, String userPassword,String repeatPassword);
+
+	/**
+	 * @Description 根据账号查询用户
+	 * @param userAccount 账号
+	 * @return User
+	 */
+	public User select(Long userAccount);
 }

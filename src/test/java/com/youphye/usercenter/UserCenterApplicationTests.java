@@ -1,13 +1,9 @@
 package com.youphye.usercenter;
 
-
-import java.util.List;
 import cn.hutool.core.util.ReUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.crypto.SecureUtil;
 import com.youphye.usercenter.common.MyConstant;
-import com.youphye.usercenter.pojo.User;
-import com.youphye.usercenter.service.UserService;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -22,8 +18,6 @@ public
 @SpringBootTest
 @RunWith(SpringRunner.class)
 class UserCenterApplicationTests {
-	@Resource
-	private UserService userService;
 	@Test
 	public void testMd5() {
 		String md5 = SecureUtil.md5(MyConstant.SALT + "123456");
@@ -33,22 +27,18 @@ class UserCenterApplicationTests {
 
 	@Test
 	public void testRegx() {
-		String content = "aa1*2aa";
+		String content = "aa1我2aa";
 		String specialCharacter = "[_`~!@#$%^&*()+=|{}':;',\\\\[\\\\].<>/?~！@#￥%……&*（）——+|{}【】‘；：”“’。，、？-]+";
 		String word = "[a-zA-Z]+";
 		String number = "[0-9]+";
-		boolean contains = ReUtil.contains(specialCharacter, content);
-		Assert.assertTrue(contains);
+		String USER_NAME = "^[a-zA-Z0-9\\u4E00-\\u9FA5]+$";
+		boolean isMatch = ReUtil.isMatch(USER_NAME, content);
+		Assert.assertTrue(isMatch);
 	}
 
 	@Test
 	public void testStrUtil() {
-		Assert.assertTrue(StrUtil.hasBlank(" "));
-	}
-	@Test
-	public void testUserService(){
-		List<User> list = userService.list();
-		System.out.println(list);
-		assertTrue(true);
+		String[] args = new String[]{"tin a","","asdf"};
+		Assert.assertTrue(StrUtil.hasBlank(args));
 	}
 }

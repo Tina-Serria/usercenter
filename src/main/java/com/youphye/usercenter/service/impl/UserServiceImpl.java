@@ -1,11 +1,13 @@
 package com.youphye.usercenter.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 
 import static com.youphye.usercenter.common.StatusCode.*;
 import static com.youphye.usercenter.common.MyConstant.*;
 
+import com.youphye.usercenter.common.MyConstant;
 import com.youphye.usercenter.exception.BusinessException;
 import com.youphye.usercenter.pojo.User;
 import com.youphye.usercenter.service.UserService;
@@ -41,7 +43,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 		}
 		// 获取最新用户的账号
 		LambdaQueryWrapper<User> lambdaQuery = new LambdaQueryWrapper<>();
-		lambdaQuery.select(User::getUserAccount).last("limit 1");
+		lambdaQuery.orderByDesc(User::getUserAccount).last("limit 1");
 		User lastUser = this.getOne(lambdaQuery);
 
 		// 为当前用户创建User对象，并赋值
@@ -58,6 +60,18 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 		this.save(user);
 		// 返回
 		return user;
+	}
+
+	@Override
+	public User select(Long userAccount) {
+		// USER_ACCOUNT_START：100000之前的账号保留，因此不合法。
+		if (userAccount < USER_ACCOUNT_START) {
+			throw new BusinessException(USER_ACCOUNT_ILLEGAL);
+		}
+		LambdaQueryWrapper<User> lambdaQueryWrapper = new LambdaQueryWrapper<>();
+		lambdaQueryWrapper.eq(User::getUserAccount, userAccount);
+		// 返回如果是null 表示没有用户
+		return this.getOne(lambdaQueryWrapper);
 	}
 }
 
