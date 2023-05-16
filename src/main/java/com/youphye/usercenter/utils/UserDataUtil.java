@@ -32,9 +32,9 @@ public class UserDataUtil {
 	}
 
 	/**
-	 * @param content defaultDescription
+	 * @param content 字符串数组
 	 * @return boolean 有返回true 否则返回false
-	 * @Description 判断是否有字符串为null、""或者含有不可见字符
+	 * @Description 判断是否有字符串为空串、null 、不可字符
 	 */
 	public static boolean hasBlank(String... content) {
 		return StrUtil.hasBlank(content);
