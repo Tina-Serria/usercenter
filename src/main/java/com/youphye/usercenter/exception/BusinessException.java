@@ -1,7 +1,6 @@
 package com.youphye.usercenter.exception;
 
-import com.youphye.usercenter.common.StatusCode;
-import jdk.jshell.spi.ExecutionControl;
+import com.youphye.usercenter.common.ResponseCode;
 
 /**
  * @ClassName: BusinessException
@@ -21,8 +20,8 @@ public class BusinessException extends RuntimeException {
 		this.description = description;
 	}
 
-	public BusinessException(StatusCode statusCode) {
-		this(statusCode.getCode(), statusCode.getMessage(), statusCode.getDescription());
+	public BusinessException(ResponseCode responseCode) {
+		this(responseCode.getCode(), responseCode.getMessage(), responseCode.getDescription());
 	}
 
 	public Integer getCode() {

@@ -4,6 +4,12 @@ import cn.hutool.core.util.ReUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.crypto.SecureUtil;
 import com.youphye.usercenter.common.MyConstant;
+import com.youphye.usercenter.common.MyEnum;
+import com.youphye.usercenter.common.RoleCode;
+import com.youphye.usercenter.pojo.User;
+
+import java.lang.reflect.Method;
+import java.util.Arrays;
 
 /**
  * @ClassName: UserDataUtil
@@ -92,6 +98,39 @@ public class UserDataUtil {
 	 */
 	public static boolean checkPhone(String phone) {
 		return ReUtil.isMatch(PHONE, phone);
+	}
+
+	public static boolean checkStatus(){return true;}
+	/**
+	 * @Description 校验此用户对象中需要校验的非空字段是否合法
+	 * @param user 用户对象
+	 * @return boolean
+	 */
+	public static boolean checkUser(User user) {
+		if (user.getUserAccount() != null && user.getUserAccount() > MyConstant.USER_ACCOUNT_START) {
+			return false;
+		}
+		if (user.getUserName() != null && !checkUserName(user.getUserName())) {
+			return false;
+		}
+		if (user.getUserPassword() != null && !checkUserPassword(user.getUserPassword())) {
+			return false;
+		}
+		if (user.getUserEmail() != null && !checkEmail(user.getUserEmail())) {
+			return false;
+		}
+		if (user.getUserPhone() != null && !checkPhone(user.getUserPhone())) {
+			return false;
+		}
+//		if(user.getUserStatus() != null && )
+		return true;
+	}
+	public static<T extends MyEnum> boolean codeInMyEnum(Integer code, T myEnum){
+		for (RoleCode roleCode : RoleCode.values()) {
+			if(roleCode.getCode().equals(code)){
+				return true;
+			}
+		}
 	}
 
 }

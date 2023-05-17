@@ -3,8 +3,9 @@ package com.youphye.usercenter.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 
-import com.youphye.usercenter.common.StatusCode;
+import com.youphye.usercenter.common.ResponseCode;
 import com.youphye.usercenter.common.MyConstant;
+import com.youphye.usercenter.common.StatusCode;
 import com.youphye.usercenter.exception.BusinessException;
 import com.youphye.usercenter.pojo.User;
 import com.youphye.usercenter.service.UserService;
@@ -24,19 +25,19 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 	public User register(String userName, String userPassword, String repeatPassword) {
 		// 参数不能为空，或者包含空格
 		if (UserDataUtil.hasBlank(userName, userPassword, repeatPassword)) {
-			throw new BusinessException(StatusCode.PARAM_NULL);
+			throw new BusinessException(ResponseCode.PARAM_NULL);
 		}
 		// 用户名必须合法
 		if (!UserDataUtil.checkUserName(userName)) {
-			throw new BusinessException(StatusCode.USERNAME_ILLEGAL);
+			throw new BusinessException(ResponseCode.USERNAME_ILLEGAL);
 		}
 		// 两次密码必须相同
 		if (!userPassword.equals(repeatPassword)) {
-			throw new BusinessException(StatusCode.PASSWORD_DIFFERENT);
+			throw new BusinessException(ResponseCode.PASSWORD_DIFFERENT);
 		}
 		// 密码必须合法
 		if (!UserDataUtil.checkUserPassword(userPassword)) {
-			throw new BusinessException(StatusCode.PASSWORD_ILLEGAL);
+			throw new BusinessException(ResponseCode.PASSWORD_ILLEGAL);
 		}
 		// 获取最新用户的账号
 		LambdaQueryWrapper<User> lambdaQuery = new LambdaQueryWrapper<>();
@@ -65,15 +66,15 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 	public User login(Long userAccount, String userPassword) {
 		// 保留账号无法登录
 		if (userAccount < MyConstant.USER_ACCOUNT_START) {
-			throw new BusinessException(StatusCode.USER_LOGIN_FAILED);
+			throw new BusinessException(ResponseCode.LOGIN_FAILED);
 		}
 		// 不能为空，或者null或者“”
 		if (UserDataUtil.hasBlank(userPassword)) {
-			throw new BusinessException(StatusCode.PARAM_NULL);
+			throw new BusinessException(ResponseCode.PARAM_NULL);
 		}
 		// 密码需要符合规则
 		if (UserDataUtil.checkUserPassword(userPassword)) {
-			throw new BusinessException(StatusCode.USER_LOGIN_FAILED);
+			throw new BusinessException(ResponseCode.LOGIN_FAILED);
 		}
 		LambdaQueryWrapper<User> lambdaQueryWrapper = new LambdaQueryWrapper<>();
 		lambdaQueryWrapper
@@ -82,7 +83,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 		// TODO 事务处理 设置登录状态
 		User user = this.getOne(lambdaQueryWrapper);
 		if (user == null) {
-			throw new BusinessException(StatusCode.USER_LOGIN_FAILED);
+			throw new BusinessException(ResponseCode.LOGIN_FAILED);
 		}
 		return user;
 	}
@@ -106,8 +107,30 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 	}
 
 	@Override
-	public Boolean delete(Long userAccount) {
+	public Boolean modify(User user) {
+		boolean checked = UserDataUtil.checkUser(user);
+		if(checked){
+
+		}else {
+			throw new BusinessException(ResponseCode.PARAM_NULL);
+		}
 		return true;
+	}
+
+	@Override
+	public Boolean delete(Long userAccount) {
+		// USER_ACCOUNT_START：100000之前的账号保留，因此不合法。
+		if (userAccount < MyConstant.USER_ACCOUNT_START) {
+			return false;
+		}
+		LambdaQueryWrapper<User> lambdaQueryWrapper = new LambdaQueryWrapper<>();
+		lambdaQueryWrapper.eq(User::getUserAccount, userAccount);
+		boolean removed = this.remove(lambdaQueryWrapper);
+		if(removed){
+			return true;
+		}else {
+			throw new BusinessException(ResponseCode.DELETE_FAILED);
+		}
 	}
 }
 

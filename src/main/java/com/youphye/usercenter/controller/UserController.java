@@ -1,7 +1,7 @@
 package com.youphye.usercenter.controller;
 
 import com.youphye.usercenter.common.Response;
-import com.youphye.usercenter.common.StatusCode;
+import com.youphye.usercenter.common.ResponseCode;
 import com.youphye.usercenter.pojo.User;
 import com.youphye.usercenter.service.UserService;
 import lombok.extern.slf4j.Slf4j;
@@ -27,27 +27,29 @@ public class UserController {
 	@PostMapping("/register")
 	public Response<User> userRegister(String userName, String userPassword, String repeatPassword) {
 		User user = userService.register(userName, userPassword, repeatPassword);
-		return Response.success(StatusCode.REGISTER_SUCCESS,user);
+		return Response.success(ResponseCode.REGISTER_SUCCESS, user);
 	}
-	@PostMapping("/login")
-	public Response userLogin(String userAccount, String userPassword) {
 
-		return Response.success(StatusCode.LOGIN_SUCCESS,true);
+	@PostMapping("/login")
+	public Response userLogin(Long userAccount, String userPassword) {
+		User user = userService.login(userAccount, userPassword);
+		return Response.success(ResponseCode.LOGIN_SUCCESS, user);
 	}
 
 	@GetMapping("/{userAccount}")
 	public Response<User> userSelect(@PathVariable Long userAccount) {
 		User user = userService.select(userAccount);
-		return Response.success(user);
+		return Response.success(ResponseCode.SELECT_SUCCESS, user);
 	}
 
 	@PutMapping
 	public Response<User> userModify(@RequestBody User user) {
-		return Response.success(user);
+
+		return Response.success(null,null);
 	}
 
 	@DeleteMapping("/{userAccount}")
 	public Response userDelete(@PathVariable Long userAccount) {
-		return Response.success(true);
+		return Response.success(ResponseCode.DELETE_SUCCESS, true);
 	}
 }

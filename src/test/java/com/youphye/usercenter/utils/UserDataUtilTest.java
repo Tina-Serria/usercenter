@@ -1,6 +1,9 @@
 package com.youphye.usercenter.utils;
 
+import com.youphye.usercenter.common.RoleCode;
 import org.junit.Test;
+
+import java.util.Arrays;
 
 import static org.junit.Assert.*;
 
@@ -14,8 +17,8 @@ import static org.junit.Assert.*;
  */
 public class UserDataUtilTest {
 	@Test
-	public void test(){
-	    String userName = "serria";
+	public void test() {
+		String userName = "serria";
 		String userPassword = "1234abc";
 		String email = "tina@gmail.com";
 		String phone = "15555555555";
@@ -55,6 +58,17 @@ public class UserDataUtilTest {
 		assertFalse(UserDataUtil.checkEmail(email));
 		email = "tinaserria@gmail.com";
 		assertTrue(UserDataUtil.checkEmail(email));
+
+	}
+
+	@Test
+	public void test2() {
+		Class enumClass = RoleCode.class;
+//		enumClass.getDeclaredConstructor().newInstance();
+		System.out.println(Arrays.toString(enumClass.getEnumConstants()));
+//		System.out.println(Arrays.toString(enumClass.getDeclaredFields()));
+		System.out.println( );
+		assertTrue(true);
 
 	}
 }

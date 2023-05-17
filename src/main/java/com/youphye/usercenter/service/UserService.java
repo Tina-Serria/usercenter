@@ -41,6 +41,13 @@ public interface UserService extends IService<User> {
 	public User select(Long userAccount);
 
 	/**
+	 * @Description 修改用户信息
+	 * @param user 需要修改的用户
+	 * @return Boolean
+	 */
+	public Boolean modify(User user);
+
+	/**
 	 * @param userAccount 用户账号
 	 * @return Boolean 删除成功返回 true
 	 * @Description 删除用户

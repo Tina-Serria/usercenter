@@ -1,5 +1,9 @@
 package com.youphye.usercenter.common;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 /**
  * @ClassName: Constant
  * @Package: com.youphye.usercenter.common
@@ -20,4 +24,5 @@ public class MyConstant {
 	public static final String SUCCESS = "执行成功";
 	public static final String FAILED = "执行失败";
 	public static final String ERROR = "系统错误";
+
 }

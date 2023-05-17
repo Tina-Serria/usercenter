@@ -18,10 +18,10 @@ public class Response<T> {
 	private String message;
 	private String description;
 
-	public Response(StatusCode statusCode, T data) {
-		this.code = statusCode.getCode();
-		this.message = statusCode.getMessage();
-		this.description = statusCode.getDescription();
+	public Response(ResponseCode responseCode, T data) {
+		this.code = responseCode.getCode();
+		this.message = responseCode.getMessage();
+		this.description = responseCode.getDescription();
 		this.data = data;
 	}
 
@@ -34,12 +34,12 @@ public class Response<T> {
 
 	/**
 	 * @Description 因为执行成功
-	 * @param statusCode 返回业务成功相关信息
+	 * @param responseCode 返回业务成功相关信息
 	 * @param data 返回的数据
 	 * @return Response<T>
 	 */
-	public static <T> Response<T> success(StatusCode statusCode, T data) {
-		return new Response<>(statusCode, data);
+	public static <T> Response<T> success(ResponseCode responseCode, T data) {
+		return new Response<>(responseCode, data);
 	}
 
 
@@ -57,6 +57,6 @@ public class Response<T> {
 	 * @return Response 错误对象
 	 */
 	public static Response error() {
-		return new Response<>(StatusCode.SYSTEM_ERROR, null);
+		return new Response<>(ResponseCode.SYSTEM_ERROR, null);
 	}
 }
