@@ -17,9 +17,9 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @Slf4j
 public class GlobalExceptionHandler {
 	/**
-	 * @Description 业务失败，返回对应的错误对象
 	 * @param businessException 业务失败抛出的异常
 	 * @return Response
+	 * @Description 业务失败，返回对应的错误对象
 	 */
 	@ExceptionHandler(BusinessException.class)
 	public Response businessExceptionHandler(BusinessException businessException) {
@@ -27,9 +27,9 @@ public class GlobalExceptionHandler {
 	}
 
 	/**
-	 * @Description 系统错误，返回系统错误，并且记录日志
 	 * @param runtimeException 系统异常
 	 * @return Response
+	 * @Description 系统错误，返回系统错误，并且记录日志
 	 */
 	@ExceptionHandler(RuntimeException.class)
 	public Response runtimeExceptionHandler(RuntimeException runtimeException) {

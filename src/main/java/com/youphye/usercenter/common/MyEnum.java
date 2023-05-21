@@ -8,6 +8,6 @@ package com.youphye.usercenter.common;
  * @Create 2023/5/17 12:35
  * @Version 1.0
  */
-public interface MyEnum  {
+public interface MyEnum {
 	public Integer getCode();
 }

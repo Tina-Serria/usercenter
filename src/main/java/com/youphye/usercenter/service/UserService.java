@@ -3,6 +3,8 @@ package com.youphye.usercenter.service;
 import com.youphye.usercenter.pojo.User;
 import com.baomidou.mybatisplus.extension.service.IService;
 
+import java.util.List;
+
 /**
  * @author Tina Serria
  * @description 针对表【user】的数据库操作Service
@@ -14,7 +16,7 @@ public interface UserService extends IService<User> {
 	 * @param userPassword   密码
 	 * @param repeatPassword 重复密码
 	 * @return User 用户对象
-	 * @Description 用户注册
+	 * @Description 用户注册, 注册成功，返回JWT令牌。注册失败会抛出异常。
 	 */
 	public User register(String userName, String userPassword, String repeatPassword);
 
@@ -22,36 +24,45 @@ public interface UserService extends IService<User> {
 	 * @param userAccount  账号
 	 * @param userPassword 密码
 	 * @return User
-	 * @Description 用户登录
+	 * @Description 用户登录，登录成功返回JWT令牌。登录失败会抛出异常。
 	 */
 	public User login(Long userAccount, String userPassword);
 
 	/**
 	 * @param userAccount 账号
-	 * @return Boolean
-	 * @Description 注销
+	 * @return User 用户对象
+	 * @Description 查询单个用户，需要管理员权限，失败抛出异常。
 	 */
-	public Boolean logout(Long userAccount);
+	public User selectOne(Long userAccount);
 
 	/**
-	 * @param userAccount 账号
-	 * @return User
-	 * @Description 根据账号查询用户
+	 * @return List<User>
+	 * @Description 批量查询用户数据。需要管理员权限。失败会抛出异常。
 	 */
-	public User select(Long userAccount);
+	public List<User> selectAll();
 
 	/**
-	 * @Description 修改用户信息
 	 * @param user 需要修改的用户
-	 * @return Boolean
+	 * @Description 修改用户信息，修改成功返回JWT。修改失败会抛出异常。
 	 */
-	public Boolean modify(User user);
+	public User modify(User user);
 
 	/**
 	 * @param userAccount 用户账号
-	 * @return Boolean 删除成功返回 true
-	 * @Description 删除用户
+	 * @Description 删除用户，用户自己可以注销自己。删除失败会抛出异常。
 	 */
-	public Boolean delete(Long userAccount);
+	public void delete(Long userAccount);
+
+	/**
+	 * @param userAccountList 用户账号列表
+	 * @Description 批量删除用户数据，需要管理员权限 。失败会抛出异常
+	 */
+	public void deleteAll(List<Long> userAccountList);
+
+	/**
+	 * @param userAccountList 用户账号列表
+	 * @Description 批量封禁用户，需要管理员权限，失败会抛出异常。
+	 */
+	public void banAll(List<Long> userAccountList);
 
 }

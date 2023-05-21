@@ -6,10 +6,12 @@ import cn.hutool.jwt.JWTUtil;
 import cn.hutool.jwt.JWTValidator;
 import cn.hutool.jwt.signers.JWTSigner;
 import cn.hutool.jwt.signers.JWTSignerUtil;
+import com.youphye.usercenter.common.JWTData;
 import com.youphye.usercenter.common.MyConstant;
 import com.youphye.usercenter.common.ResponseCode;
 import com.youphye.usercenter.common.RoleCode;
 import com.youphye.usercenter.exception.BusinessException;
+import com.youphye.usercenter.pojo.User;
 
 import java.util.Date;
 
@@ -25,23 +27,27 @@ public class MyJWTUtil {
 	private static final JWTSigner jwtSigner = JWTSignerUtil.hs256(MyConstant.SALT.getBytes());
 
 	/**
-	 * @param userAccount 账号
-	 * @param userRole    用户类型
-	 * @return String JWT令牌
-	 * @Description 根据账号和用户类型设置生成JWT令牌
+	 * @param user 用户对象
+	 * @return String JWT令牌字符串
+	 * @Description 根据账号和用户类型生成JWT令牌
 	 */
-	public static String create(String userAccount, Integer userRole) {
+	public static String create(User user) {
+		JWTData jwtData = new JWTData(user);
 		return JWT.create()
 				.setExpiresAt(new Date(System.currentTimeMillis() + MyConstant.TIMEOUT))
-				.setPayload(MyConstant.USER_ACCOUNT, userAccount)
-				.setPayload(MyConstant.USER_ROLE, userRole)
+				.setPayload(MyConstant.JWT_DATA,jwtData)
 				.sign(jwtSigner);
 	}
 
-	public static RoleCode verify(String token) {
+	/**
+	 * @param token JWT令牌字符串
+	 * @return RoleCode 用户类型枚举
+	 * @Description 验证解析JWT令牌，返回用户枚举类型。如果没有找到用户类型，或者JWT验证失败则会抛出异常
+	 */
+	public static JWTData verify(String token) {
 		boolean verified = JWTUtil.verify(token, jwtSigner);
 		if (verified) {
-			// JWT令牌过期
+			// 验证JWT令牌过期
 			try {
 				// 如果验证失败会抛出异常
 				JWTValidator.of(token).validateDate(new Date());
@@ -50,11 +56,10 @@ public class MyJWTUtil {
 			}
 			// 解析令牌
 			final JWT jwt = JWTUtil.parseToken(token);
+			JWTData jwtData = (JWTData)jwt.getPayload(MyConstant.JWT_DATA);
 			for (RoleCode roleCode : RoleCode.values()) {
-				// 将 Object 进行类型转换 获取code
-				NumberWithFormat code = (NumberWithFormat) jwt.getPayload(MyConstant.USER_ROLE);
-				if (roleCode.getCode().equals(code.intValue())) {
-					return roleCode;
+				if (roleCode.getCode().equals(jwtData.getUserRole())) {
+					return jwtData;
 				}
 			}
 		} else {

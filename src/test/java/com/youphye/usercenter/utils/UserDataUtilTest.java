@@ -67,13 +67,13 @@ public class UserDataUtilTest {
 //		enumClass.getDeclaredConstructor().newInstance();
 		System.out.println(Arrays.toString(enumClass.getEnumConstants()));
 //		System.out.println(Arrays.toString(enumClass.getDeclaredFields()));
-		System.out.println( );
+		System.out.println();
 		assertTrue(true);
 
 	}
 
 	@Test
 	public void codeInMyEnum() {
-		UserDataUtil.codeInMyEnum(1,RoleCode.values());
+		UserDataUtil.codeInMyEnum(1, RoleCode.values());
 	}
 }

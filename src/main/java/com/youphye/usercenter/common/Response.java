@@ -2,6 +2,7 @@ package com.youphye.usercenter.common;
 
 import com.youphye.usercenter.exception.BusinessException;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * @ClassName: Response
@@ -12,6 +13,7 @@ import lombok.Data;
  * @Version 1.0
  */
 @Data
+@NoArgsConstructor
 public class Response<T> {
 	private Integer code;
 	private T data;
@@ -33,10 +35,10 @@ public class Response<T> {
 	}
 
 	/**
-	 * @Description 因为执行成功
 	 * @param responseCode 返回业务成功相关信息
-	 * @param data 返回的数据
+	 * @param data         返回的数据
 	 * @return Response<T>
+	 * @Description 因为执行成功
 	 */
 	public static <T> Response<T> success(ResponseCode responseCode, T data) {
 		return new Response<>(responseCode, data);
@@ -44,17 +46,17 @@ public class Response<T> {
 
 
 	/**
-	 * @Description 业务失败的返回
 	 * @param businessException 抛出的业务失败异常
 	 * @return Response
+	 * @Description 业务失败的返回
 	 */
 	public static Response failed(BusinessException businessException) {
 		return new Response<>(businessException.getCode(), businessException.getMessage(), businessException.getDescription(), null);
 	}
 
 	/**
-	 * @Description 发送RuntimeException即系统错误时的返回方法
 	 * @return Response 错误对象
+	 * @Description 发送RuntimeException即系统错误时的返回方法
 	 */
 	public static Response error() {
 		return new Response<>(ResponseCode.SYSTEM_ERROR, null);

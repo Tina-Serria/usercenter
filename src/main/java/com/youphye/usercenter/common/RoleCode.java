@@ -8,7 +8,7 @@ package com.youphye.usercenter.common;
  * @Create 2023/5/17 11:26
  * @Version 1.0
  */
-public enum RoleCode implements  MyEnum{
+public enum RoleCode implements MyEnum {
 	// 用户
 	USER(0),
 	// 管理员

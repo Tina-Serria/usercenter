@@ -38,11 +38,12 @@ class UserCenterApplicationTests {
 
 	@Test
 	public void testStrUtil() {
-		String[] args = new String[]{"tin a","","asdf"};
+		String[] args = new String[]{"tin a", "", "asdf"};
 		Assert.assertTrue(StrUtil.hasBlank(args));
 	}
+
 	@Test
-	public void test(){
+	public void test() {
 //		readonly final  Integer[] list = new Integer[]{1,2};
 //		list[0]  = 3;
 		assertTrue(true);

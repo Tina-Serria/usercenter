@@ -8,13 +8,12 @@ package com.youphye.usercenter.common;
  * @Create 2023/5/15 9:03
  * @Version 1.0
  */
-public enum ResponseCode  implements MyEnum{
+public enum ResponseCode implements MyEnum {
 	REGISTER_SUCCESS(40001, "注册成功", "注册成功"),
 	LOGIN_SUCCESS(40002, "登录成功", "登录成功"),
 	SELECT_SUCCESS(40003, "查询成功", "查询成功"),
-	DELETE_SUCCESS(40004,"注销成功","删除成功"),
-	LOGOUT_SUCCESS(40005,"退出成功","退出成功"),
-	MODIFY_SUCCESS(40006, "修改成功","修改成功"),
+	DELETE_SUCCESS(40004, "注销成功", "删除成功"),
+	MODIFY_SUCCESS(40005, "修改成功", "修改成功"),
 
 	PARAM_NULL(40000, "操作失败", "输入不能为空"),
 
@@ -29,20 +28,22 @@ public enum ResponseCode  implements MyEnum{
 		登录失败
 	 */
 	LOGIN_FAILED(40201, "登录失败", "账号或密码错误"),
-	IDENTIFY_EXPIRED(40202, "登录过期","登录过期，请重新登录"),
+	IDENTIFY_EXPIRED(40202, "登录过期", "登录过期，请重新登录"),
+	PERMISSION_DENIED(40203, "权限不足", "没有权限执行此操作"),
+
+	/*
+		查询失败
+	 */
 
 	/*
 		注销失败
 	 */
-	DELETE_FAILED(40401,"注销失败","注销失败，请稍后重试"),
-	/*
-		退出失败
-	 */
+	DELETE_FAILED(40401, "注销失败", "注销失败，请稍后重试"),
 
 	/*
 		修改失败
 	 */
-	MODIFY_FAILED(40601,"修改失败","修改失败，请检查是否有不合法字段"),
+	MODIFY_FAILED(40601, "修改失败", "修改失败，请检查修改的值是否合法"),
 
 	SYSTEM_ERROR(50100, "系统异常", "网络环境异常");
 	private final Integer code;

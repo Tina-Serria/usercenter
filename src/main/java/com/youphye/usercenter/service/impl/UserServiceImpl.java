@@ -6,12 +6,15 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 
 import com.youphye.usercenter.common.ResponseCode;
 import com.youphye.usercenter.common.MyConstant;
+import com.youphye.usercenter.common.StatusCode;
 import com.youphye.usercenter.exception.BusinessException;
 import com.youphye.usercenter.pojo.User;
 import com.youphye.usercenter.service.UserService;
 import com.youphye.usercenter.mapper.UserMapper;
 import com.youphye.usercenter.utils.UserDataUtil;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * @author Tina Serria
@@ -42,7 +45,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 		// 获取最新用户的账号
 		LambdaQueryWrapper<User> lambdaQuery = new LambdaQueryWrapper<>();
 		lambdaQuery.orderByDesc(User::getUserAccount).last("limit 1");
-		// TODO 事务处理
 		User lastUser = this.getOne(lambdaQuery);
 
 		// 为当前用户创建User对象，并赋值
@@ -55,7 +57,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 		}
 		user.setUserName(userName);
 		user.setUserPassword(UserDataUtil.md5(userPassword));
-		// TODO 事务处理
 		// 向数据库写入用户
 		this.save(user);
 		// 返回
@@ -64,10 +65,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
 	@Override
 	public User login(Long userAccount, String userPassword) {
-		// 保留账号无法登录
-		if (userAccount < MyConstant.USER_ACCOUNT_START) {
-			throw new BusinessException(ResponseCode.LOGIN_FAILED);
-		}
 		// 不能为空，或者null或者“”
 		if (UserDataUtil.hasBlank(userPassword)) {
 			throw new BusinessException(ResponseCode.PARAM_NULL);
@@ -80,7 +77,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 		lambdaQueryWrapper
 				.eq(User::getUserAccount, userAccount)
 				.eq(User::getUserPassword, UserDataUtil.md5(userPassword));
-		// TODO 事务处理 设置登录状态
 		User user = this.getOne(lambdaQueryWrapper);
 		if (user == null) {
 			throw new BusinessException(ResponseCode.LOGIN_FAILED);
@@ -89,48 +85,79 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 	}
 
 	@Override
-	public Boolean logout(Long userAccount) {
-		return true;
-	}
-
-	@Override
-	public User select(Long userAccount) {
-		// USER_ACCOUNT_START：100000之前的账号保留，因此不合法。
-		if (userAccount < MyConstant.USER_ACCOUNT_START) {
-			return null;
-		}
+	public User selectOne(Long userAccount) {
 		LambdaQueryWrapper<User> lambdaQueryWrapper = new LambdaQueryWrapper<>();
 		lambdaQueryWrapper.eq(User::getUserAccount, userAccount);
-		// 返回如果是null 表示没有用户
-		// TODO 事务处理 清除登录状态
 		return this.getOne(lambdaQueryWrapper);
 	}
 
+
 	@Override
-	public Boolean modify(User user) {
+	public List<User> selectAll() {
+		return this.getBaseMapper().selectList(null);
+	}
+
+	@Override
+	public User modify(User user) {
 		boolean checked = UserDataUtil.checkUser(user);
+		// 检查User对象中是否存在非法字段
 		if (!checked) {
 			throw new BusinessException(ResponseCode.MODIFY_FAILED);
 		}
 		LambdaUpdateWrapper<User> lambdaUpdateWrapper = new LambdaUpdateWrapper<>();
 		lambdaUpdateWrapper.eq(User::getUserAccount, user.getUserAccount());
-
-		return this.update(lambdaUpdateWrapper);
+		// 更新数据库中的用户信息
+		boolean updated = this.update(lambdaUpdateWrapper);
+		if (!updated) {
+			throw new BusinessException(ResponseCode.MODIFY_FAILED);
+		}
+		LambdaQueryWrapper<User> lambdaQueryWrapper = new LambdaQueryWrapper<>();
+		lambdaQueryWrapper.eq(User::getUserAccount, user.getUserAccount());
+		// 返回更新后的User对象
+		return this.getOne(lambdaQueryWrapper);
 	}
 
 	@Override
-	public Boolean delete(Long userAccount) {
+	public void delete(Long userAccount) {
 		// USER_ACCOUNT_START：100000之前的账号保留，因此不合法。
 		if (userAccount < MyConstant.USER_ACCOUNT_START) {
-			return false;
+			throw new BusinessException(ResponseCode.DELETE_FAILED);
 		}
 		LambdaQueryWrapper<User> lambdaQueryWrapper = new LambdaQueryWrapper<>();
 		lambdaQueryWrapper.eq(User::getUserAccount, userAccount);
+		// 获取删除结果
 		boolean removed = this.remove(lambdaQueryWrapper);
-		if (removed) {
-			return true;
-		} else {
+		if (!removed) {
 			throw new BusinessException(ResponseCode.DELETE_FAILED);
+		}
+	}
+
+	@Override
+	public void deleteAll(List<Long> userAccountList) {
+		LambdaQueryWrapper<User> lambdaQueryWrapper = new LambdaQueryWrapper<>();
+		// 循环删除所有用户
+		for (Long userAccount : userAccountList) {
+			if (userAccount < MyConstant.USER_ACCOUNT_START) {
+				throw new BusinessException(ResponseCode.DELETE_FAILED);
+			}
+			lambdaQueryWrapper.clear();
+			lambdaQueryWrapper.eq(User::getUserAccount, userAccount);
+			this.remove(lambdaQueryWrapper);
+		}
+	}
+
+	@Override
+	public void banAll(List<Long> userAccountList) {
+		LambdaUpdateWrapper<User> lambdaUpdateWrapper = new LambdaUpdateWrapper<>();
+		// 循环删除所有用户
+		for (Long userAccount : userAccountList) {
+			if (userAccount < MyConstant.USER_ACCOUNT_START) {
+				throw new BusinessException(ResponseCode.DELETE_FAILED);
+			}
+			lambdaUpdateWrapper.clear();
+			lambdaUpdateWrapper.eq(User::getUserAccount, userAccount)
+					.set(User::getUserStatus, StatusCode.BANNED);
+			this.update(lambdaUpdateWrapper);
 		}
 	}
 }

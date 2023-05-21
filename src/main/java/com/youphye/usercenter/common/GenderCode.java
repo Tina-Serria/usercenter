@@ -8,7 +8,7 @@ package com.youphye.usercenter.common;
  * @Create 2023/5/17 13:06
  * @Version 1.0
  */
-public enum GenderCode implements  MyEnum{
+public enum GenderCode implements MyEnum {
 	// 女性
 	WOMAN(0),
 	// 男性

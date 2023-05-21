@@ -120,13 +120,13 @@ public class UserDataUtil {
 		if (user.getUserPhone() != null && !checkPhone(user.getUserPhone())) {
 			return false;
 		}
-		if(user.getUserStatus() != null && !codeInMyEnum(user.getUserStatus(), StatusCode.values())){
+		if (user.getUserStatus() != null && !codeInMyEnum(user.getUserStatus(), StatusCode.values())) {
 			return false;
 		}
-		if(user.getUserRole() != null && !codeInMyEnum(user.getUserRole(), RoleCode.values())){
+		if (user.getUserRole() != null && !codeInMyEnum(user.getUserRole(), RoleCode.values())) {
 			return false;
 		}
-		if(user.getUserGender() != null && !codeInMyEnum(user.getUserGender(), GenderCode.values())){
+		if (user.getUserGender() != null && !codeInMyEnum(user.getUserGender(), GenderCode.values())) {
 			return false;
 		}
 		return true;

@@ -1,8 +1,5 @@
 package com.youphye.usercenter.common;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 /**
  * @ClassName: Constant
@@ -25,7 +22,9 @@ public class MyConstant {
 		超时时间为10分钟。单位是毫秒。
 	 */
 	public static final Long TIMEOUT = 600000L;
-	public static final String USER_ACCOUNT = "userAccount";
-	public static final String USER_ROLE = "userRole";
+	public static final String JWT_DATA = "jwtData";
+
+	public static final String TOKEN = "token";
+	public static final String ALL = "all";
 
 }
