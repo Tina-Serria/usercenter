@@ -45,6 +45,6 @@ class UserCenterApplicationTests {
 	public void test(){
 //		readonly final  Integer[] list = new Integer[]{1,2};
 //		list[0]  = 3;
-//		assertEquals(Integer.valueOf(1),list[0]);
+		assertTrue(true);
 	}
 }

@@ -3,13 +3,8 @@ package com.youphye.usercenter.utils;
 import cn.hutool.core.util.ReUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.crypto.SecureUtil;
-import com.youphye.usercenter.common.MyConstant;
-import com.youphye.usercenter.common.MyEnum;
-import com.youphye.usercenter.common.RoleCode;
+import com.youphye.usercenter.common.*;
 import com.youphye.usercenter.pojo.User;
-
-import java.lang.reflect.Method;
-import java.util.Arrays;
 
 /**
  * @ClassName: UserDataUtil
@@ -100,11 +95,14 @@ public class UserDataUtil {
 		return ReUtil.isMatch(PHONE, phone);
 	}
 
-	public static boolean checkStatus(){return true;}
+	public static boolean checkStatus() {
+		return true;
+	}
+
 	/**
-	 * @Description 校验此用户对象中需要校验的非空字段是否合法
 	 * @param user 用户对象
 	 * @return boolean
+	 * @Description 此方法仅在更新用户信息时调用，校验此用户对象中需要校验的非空字段是否合法
 	 */
 	public static boolean checkUser(User user) {
 		if (user.getUserAccount() != null && user.getUserAccount() > MyConstant.USER_ACCOUNT_START) {
@@ -122,15 +120,27 @@ public class UserDataUtil {
 		if (user.getUserPhone() != null && !checkPhone(user.getUserPhone())) {
 			return false;
 		}
-//		if(user.getUserStatus() != null && )
+		if(user.getUserStatus() != null && !codeInMyEnum(user.getUserStatus(), StatusCode.values())){
+			return false;
+		}
+		if(user.getUserRole() != null && !codeInMyEnum(user.getUserRole(), RoleCode.values())){
+			return false;
+		}
+		if(user.getUserGender() != null && !codeInMyEnum(user.getUserGender(), GenderCode.values())){
+			return false;
+		}
 		return true;
 	}
-	public static<T extends MyEnum> boolean codeInMyEnum(Integer code, T myEnum){
-		for (RoleCode roleCode : RoleCode.values()) {
-			if(roleCode.getCode().equals(code)){
+
+	// 用于更新的时候判断枚举值对应的编码是否属于枚举类
+	public static <T extends MyEnum> boolean codeInMyEnum(Integer code, T[] myEnum) {
+
+		for (T enumItem : myEnum) {
+			if (enumItem.getCode().equals(code)) {
 				return true;
 			}
 		}
+		return false;
 	}
 
 }

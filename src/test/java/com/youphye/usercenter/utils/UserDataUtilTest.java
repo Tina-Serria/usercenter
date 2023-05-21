@@ -71,4 +71,9 @@ public class UserDataUtilTest {
 		assertTrue(true);
 
 	}
+
+	@Test
+	public void codeInMyEnum() {
+		UserDataUtil.codeInMyEnum(1,RoleCode.values());
+	}
 }

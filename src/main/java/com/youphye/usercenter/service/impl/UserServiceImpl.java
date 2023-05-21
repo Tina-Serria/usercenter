@@ -1,11 +1,11 @@
 package com.youphye.usercenter.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 
 import com.youphye.usercenter.common.ResponseCode;
 import com.youphye.usercenter.common.MyConstant;
-import com.youphye.usercenter.common.StatusCode;
 import com.youphye.usercenter.exception.BusinessException;
 import com.youphye.usercenter.pojo.User;
 import com.youphye.usercenter.service.UserService;
@@ -109,12 +109,13 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 	@Override
 	public Boolean modify(User user) {
 		boolean checked = UserDataUtil.checkUser(user);
-		if(checked){
-
-		}else {
-			throw new BusinessException(ResponseCode.PARAM_NULL);
+		if (!checked) {
+			throw new BusinessException(ResponseCode.MODIFY_FAILED);
 		}
-		return true;
+		LambdaUpdateWrapper<User> lambdaUpdateWrapper = new LambdaUpdateWrapper<>();
+		lambdaUpdateWrapper.eq(User::getUserAccount, user.getUserAccount());
+
+		return this.update(lambdaUpdateWrapper);
 	}
 
 	@Override
@@ -126,9 +127,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 		LambdaQueryWrapper<User> lambdaQueryWrapper = new LambdaQueryWrapper<>();
 		lambdaQueryWrapper.eq(User::getUserAccount, userAccount);
 		boolean removed = this.remove(lambdaQueryWrapper);
-		if(removed){
+		if (removed) {
 			return true;
-		}else {
+		} else {
 			throw new BusinessException(ResponseCode.DELETE_FAILED);
 		}
 	}
