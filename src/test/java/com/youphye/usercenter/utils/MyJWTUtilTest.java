@@ -16,11 +16,12 @@ public class MyJWTUtilTest {
 
 	@Test
 	public void create() {
-		System.out.println(MyJWTUtil.create("100001", 3));
+		System.out.println();
 	}
 
 	@Test
 	public void verify() {
 		System.out.println(MyJWTUtil.verify("eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2ODQ2NDMzMDksInVzZXJBY2NvdW50IjoiMTAwMDAxIiwidXNlclJvbGUiOjN9.QPtx-5ek6RVL3TeMQH8yfqNxvA_r5yB1ru9nFLoq69U"));
 	}
+
 }

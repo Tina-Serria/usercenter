@@ -32,7 +32,7 @@ public class UserController {
 	 * @param userPassword   密码
 	 * @param repeatPassword 确认密码
 	 * @return JWTResponse 携带JWT令牌和User对象的返回对象
-	 * @Description 注册成功返回JWT令牌以及User对象
+	 * @Description 用户注册。注册成功返回JWT令牌以及User对象
 	 */
 	@PostMapping("/register")
 	public JWTResponse register(String userName, String userPassword, String repeatPassword) {
@@ -44,8 +44,8 @@ public class UserController {
 	/**
 	 * @param userAccount  账号
 	 * @param userPassword 密码
-	 * @return JWTResponse 携带JWT令牌和User对象的返回对象
-	 * @Description 登录成功返回JWT令牌以及User对象
+	 * @return JWTResponse 带有JWT和User的返回对象
+	 * @Description 用户登录。登录成功，生成并JWT和user对象
 	 */
 	@PostMapping("/login")
 	public JWTResponse login(Long userAccount, String userPassword) {
@@ -54,6 +54,11 @@ public class UserController {
 		return JWTResponse.success(ResponseCode.LOGIN_SUCCESS, user, jwt);
 	}
 
+	/**
+	 * @param userAccount 账号
+	 * @return Response<User> 返回对象
+	 * @Description 用户查询。根据账号查询单个用户，需要管理员权限。
+	 */
 	@GetMapping("/{userAccount}")
 	public Response<User> selectOne(@PathVariable Long userAccount) {
 		User user = userService.selectOne(userAccount);
@@ -62,7 +67,7 @@ public class UserController {
 
 	/**
 	 * @return Response<List < User>> 包含用户对象列表的返回对象
-	 * @Description 返回所有用户，需要管理员权限。
+	 * @Description 查询全部用户。返回所有用户，需要管理员权限。
 	 */
 	@GetMapping
 	public Response<List<User>> selectAll() {
@@ -73,7 +78,7 @@ public class UserController {
 	/**
 	 * @param user 需要修改的用户对象
 	 * @return JWTResponse 携带JWT令牌和User对象的返回对象
-	 * @Description 修改需要重新生成JWT令牌并返回JWT令牌以及User对象
+	 * @Description 修改用户。修改需要重新生成JWT令牌并返回JWT令牌以及User对象
 	 */
 	@PutMapping
 	public JWTResponse modify(@RequestBody User user) {
@@ -84,12 +89,28 @@ public class UserController {
 
 	/**
 	 * @return Response 返回对象
-	 * @Description 用户自己可以删除自己的账号。从JWT令牌中解析数据。
+	 * @Description 删除用户。用户自己可以删除自己的账号。从JWT令牌中解析数据。
 	 */
 	@DeleteMapping
 	public Response delete(@RequestHeader(MyConstant.TOKEN) String token) {
 		JWTData jwtData = MyJWTUtil.verify(token);
 		userService.delete(jwtData.getUserAccount());
-		return Response.success(ResponseCode.DELETE_SUCCESS, true);
+		return Response.success(ResponseCode.DELETE_SUCCESS);
+	}
+
+	/**
+	 * @param userAccountList 账号列表
+	 * @return Response 返回对象
+	 * @Description 删除所有列表中用户。需要管理员权限。
+	 */
+	@DeleteMapping("/deleteAll")
+	public Response deleteAll(List<Long> userAccountList) {
+		userService.deleteAll(userAccountList);
+		return Response.success(ResponseCode.DELETE_SUCCESS);
+	}
+	@PostMapping("/banAll")
+	public Response banAll(List<Long> userAccountList){
+		userService.banAll(userAccountList);
+		return Response.success(ResponseCode.BAN_SUCCESS);
 	}
 }

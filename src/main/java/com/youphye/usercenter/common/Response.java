@@ -43,6 +43,9 @@ public class Response<T> {
 	public static <T> Response<T> success(ResponseCode responseCode, T data) {
 		return new Response<>(responseCode, data);
 	}
+	public static  Response success(ResponseCode responseCode) {
+		return new Response<>(responseCode, null);
+	}
 
 
 	/**

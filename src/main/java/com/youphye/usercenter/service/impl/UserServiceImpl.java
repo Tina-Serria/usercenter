@@ -13,6 +13,7 @@ import com.youphye.usercenter.service.UserService;
 import com.youphye.usercenter.mapper.UserMapper;
 import com.youphye.usercenter.utils.UserDataUtil;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -131,7 +132,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 			throw new BusinessException(ResponseCode.DELETE_FAILED);
 		}
 	}
-
+	@Transactional
 	@Override
 	public void deleteAll(List<Long> userAccountList) {
 		LambdaQueryWrapper<User> lambdaQueryWrapper = new LambdaQueryWrapper<>();
@@ -145,7 +146,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 			this.remove(lambdaQueryWrapper);
 		}
 	}
-
+	@Transactional
 	@Override
 	public void banAll(List<Long> userAccountList) {
 		LambdaUpdateWrapper<User> lambdaUpdateWrapper = new LambdaUpdateWrapper<>();
