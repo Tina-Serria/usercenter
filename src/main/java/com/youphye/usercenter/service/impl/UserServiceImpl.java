@@ -71,7 +71,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 			throw new BusinessException(ResponseCode.PARAM_NULL);
 		}
 		// 密码需要符合规则
-		if (UserDataUtil.checkUserPassword(userPassword)) {
+		if (!UserDataUtil.checkUserPassword(userPassword)) {
 			throw new BusinessException(ResponseCode.LOGIN_FAILED);
 		}
 		LambdaQueryWrapper<User> lambdaQueryWrapper = new LambdaQueryWrapper<>();
@@ -107,6 +107,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 		}
 		LambdaUpdateWrapper<User> lambdaUpdateWrapper = new LambdaUpdateWrapper<>();
 		lambdaUpdateWrapper.eq(User::getUserAccount, user.getUserAccount());
+		spliceWrapper(lambdaUpdateWrapper, user);
 		// 更新数据库中的用户信息
 		boolean updated = this.update(lambdaUpdateWrapper);
 		if (!updated) {
@@ -116,6 +117,30 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 		lambdaQueryWrapper.eq(User::getUserAccount, user.getUserAccount());
 		// 返回更新后的User对象
 		return this.getOne(lambdaQueryWrapper);
+	}
+
+	/**
+	 * @param lambdaUpdateWrapper 需要拼接的Wrapper
+	 * @param user                需要更新的用户
+	 * @return LambdaUpdateWrapper<User>
+	 * @Description 将user用户可以自定义的非空字段拼接到Wrapper中
+	 */
+	private void spliceWrapper(LambdaUpdateWrapper<User> lambdaUpdateWrapper, User user) {
+		if (user.getUserName() != null) {
+			lambdaUpdateWrapper.set(User::getUserName, user.getUserName());
+		}
+		if (user.getUserGender() != null) {
+			lambdaUpdateWrapper.set(User::getUserGender, user.getUserGender());
+		}
+		if (user.getUserPassword() != null) {
+			lambdaUpdateWrapper.set(User::getUserPassword, user.getUserPassword());
+		}
+		if (user.getUserPhone() != null) {
+			lambdaUpdateWrapper.set(User::getUserPhone, user.getUserPhone());
+		}
+		if (user.getUserEmail() != null) {
+			lambdaUpdateWrapper.set(User::getUserEmail, user.getUserEmail());
+		}
 	}
 
 	@Override
@@ -132,6 +157,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 			throw new BusinessException(ResponseCode.DELETE_FAILED);
 		}
 	}
+
 	@Transactional
 	@Override
 	public void deleteAll(List<Long> userAccountList) {
@@ -146,6 +172,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 			this.remove(lambdaQueryWrapper);
 		}
 	}
+
 	@Transactional
 	@Override
 	public void banAll(List<Long> userAccountList) {
@@ -157,7 +184,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 			}
 			lambdaUpdateWrapper.clear();
 			lambdaUpdateWrapper.eq(User::getUserAccount, userAccount)
-					.set(User::getUserStatus, StatusCode.BANNED);
+					.set(User::getUserStatus, StatusCode.BANNED.getCode());
 			this.update(lambdaUpdateWrapper);
 		}
 	}

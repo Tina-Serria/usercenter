@@ -1,6 +1,7 @@
 package com.youphye.usercenter.utils;
 
 import cn.hutool.core.convert.NumberWithFormat;
+import cn.hutool.json.JSONUtil;
 import cn.hutool.jwt.JWT;
 import cn.hutool.jwt.JWTUtil;
 import cn.hutool.jwt.JWTValidator;
@@ -35,7 +36,7 @@ public class MyJWTUtil {
 		JWTData jwtData = new JWTData(user);
 		return JWT.create()
 				.setExpiresAt(new Date(System.currentTimeMillis() + MyConstant.TIMEOUT))
-				.setPayload(MyConstant.JWT_DATA,jwtData)
+				.setPayload(MyConstant.JWT_DATA,JSONUtil.toJsonStr(jwtData))
 				.sign(jwtSigner);
 	}
 
@@ -56,12 +57,14 @@ public class MyJWTUtil {
 			}
 			// 解析令牌
 			final JWT jwt = JWTUtil.parseToken(token);
-			JWTData jwtData = (JWTData)jwt.getPayload(MyConstant.JWT_DATA);
+			String json = (String)jwt.getPayload(MyConstant.JWT_DATA);
+			JWTData jwtData = JSONUtil.toBean( json, JWTData.class);
 			for (RoleCode roleCode : RoleCode.values()) {
 				if (roleCode.getCode().equals(jwtData.getUserRole())) {
 					return jwtData;
 				}
 			}
+
 		} else {
 			// JWT令牌被篡改
 			throw new BusinessException(ResponseCode.IDENTIFY_EXPIRED);

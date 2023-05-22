@@ -105,7 +105,7 @@ public class UserDataUtil {
 	 * @Description 此方法仅在更新用户信息时调用，校验此用户对象中需要校验的非空字段是否合法
 	 */
 	public static boolean checkUser(User user) {
-		if (user.getUserAccount() != null && user.getUserAccount() > MyConstant.USER_ACCOUNT_START) {
+		if (user.getUserAccount() != null && user.getUserAccount()  <= MyConstant.USER_ACCOUNT_START) {
 			return false;
 		}
 		if (user.getUserName() != null && !checkUserName(user.getUserName())) {
