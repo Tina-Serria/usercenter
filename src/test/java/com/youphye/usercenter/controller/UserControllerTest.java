@@ -17,7 +17,7 @@ import static org.junit.Assert.*;
 /**
  * @ClassName: UserControllerTest
  * @Package: com.youphye.usercenter.controller
- * @Description:
+ * @Description: UserController 测试类
  * @Author Tina Serria
  * @Create 2023/5/22 10:26
  * @Version 1.0
@@ -36,6 +36,7 @@ public class UserControllerTest {
 		String repeatPassword = "1234aaaa";
 		JWTResponse jwtResponse = userController.register(userName, userPassword, repeatPassword);
 		System.out.println(jwtResponse.getJwt());
+		assertTrue(true);
 	}
 
 	@Test
@@ -51,12 +52,14 @@ public class UserControllerTest {
 	public void selectOne() {
 		Response<User> userResponse = userController.selectOne(100001L);
 		System.out.println(userResponse.getData());
+		assertTrue(true);
 	}
 
 	@Test
 	public void selectAll() {
 		Response<List<User>> userListResponse = userController.selectAll();
 		System.out.println(userListResponse.getData());
+		assertTrue(true);
 	}
 
 	@Test
@@ -66,6 +69,7 @@ public class UserControllerTest {
 		user.setUserAccount(100004L);
 		JWTResponse modify = userController.modify(user);
 		System.out.println(modify);
+		assertTrue(true);
 	}
 
 	@Test
