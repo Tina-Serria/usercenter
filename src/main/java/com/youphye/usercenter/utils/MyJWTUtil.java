@@ -43,28 +43,22 @@ public class MyJWTUtil {
 	 * @Description 验证解析JWT令牌，返回用户枚举类型。如果没有找到用户类型，或者JWT验证失败则会抛出异常
 	 */
 	public static JWTData verify(String token) {
-		boolean verified = JWTUtil.verify(token, jwtSigner);
-		if (verified) {
+		try {
+			JWTUtil.verify(token, jwtSigner);
 			// 验证JWT令牌过期
-			try {
-				// 如果验证失败会抛出异常
-				JWTValidator.of(token).validateDate(new Date());
-			} catch (Exception e) {
-				throw new BusinessException(ResponseCode.IDENTIFY_EXPIRED);
-			}
-			// 解析令牌
-			final JWT jwt = JWTUtil.parseToken(token);
-			String json = (String)jwt.getPayload(MyConstant.JWT_DATA);
-			JWTData jwtData = JSONUtil.toBean( json, JWTData.class);
-			for (RoleCode roleCode : RoleCode.values()) {
-				if (roleCode.getCode().equals(jwtData.getUserRole())) {
-					return jwtData;
-				}
-			}
-
-		} else {
-			// JWT令牌被篡改
+			// 如果验证失败会抛出异常
+			JWTValidator.of(token).validateDate(new Date());
+		} catch (Exception e) {
 			throw new BusinessException(ResponseCode.IDENTIFY_EXPIRED);
+		}
+		// 解析令牌
+		final JWT jwt = JWTUtil.parseToken(token);
+		String json = (String)jwt.getPayload(MyConstant.JWT_DATA);
+		JWTData jwtData = JSONUtil.toBean( json, JWTData.class);
+		for (RoleCode roleCode : RoleCode.values()) {
+			if (roleCode.getCode().equals(jwtData.getUserRole())) {
+				return jwtData;
+			}
 		}
 		throw new BusinessException(ResponseCode.IDENTIFY_EXPIRED);
 	}

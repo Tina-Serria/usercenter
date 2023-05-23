@@ -1,8 +1,10 @@
 package com.youphye.usercenter.interceptor;
 
+import cn.hutool.json.JSONConfig;
 import cn.hutool.json.JSONUtil;
 import com.youphye.usercenter.common.*;
 import com.youphye.usercenter.utils.MyJWTUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 
@@ -17,6 +19,7 @@ import javax.servlet.http.HttpServletResponse;
  * @Create 2023/5/21 14:48
  * @Version 1.0
  */
+@Slf4j
 @Component
 public class RoleCheckInterceptor implements HandlerInterceptor {
 	@Override
@@ -27,10 +30,16 @@ public class RoleCheckInterceptor implements HandlerInterceptor {
 		JWTData jwtData = MyJWTUtil.verify(jwt);
 		// 解析url
 		String url = request.getRequestURL().toString();
-		// 如果路径包括 ALL，并且用户身份不是管理员则拦截请求
-		if (url.contains(MyConstant.ALL) && !jwtData.getUserRole().equals(RoleCode.ADMINISTRATOR.getCode())) {
-			response.getWriter().write(JSONUtil.toJsonStr(Response.success(ResponseCode.PERMISSION_DENIED, null)));
-			return false;
+		// 如果路径包括 ALL 或者 SELECT_URL，并且用户身份不是管理员则拦截请求
+		if (url.contains(MyConstant.ALL) || url.contains(MyConstant.SELECT)) {
+			if(!RoleCode.ADMINISTRATOR.getCode().equals(jwtData.getUserRole())){
+				response.setCharacterEncoding(MyConstant.CHARSET);
+				response.setContentType(MyConstant.CONTENT_TYPE);
+				JSONConfig jsonConfig = new JSONConfig();
+				jsonConfig.setIgnoreNullValue(false);
+				response.getWriter().write(JSONUtil.toJsonStr(Response.success(ResponseCode.PERMISSION_DENIED),jsonConfig));
+				return false;
+			}
 		}
 		// 如果是用户请求则放行请求
 		return true;

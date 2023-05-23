@@ -3,7 +3,10 @@ package com.youphye.usercenter;
 import cn.hutool.core.util.ReUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.crypto.SecureUtil;
+import cn.hutool.json.JSONUtil;
 import com.youphye.usercenter.common.MyConstant;
+import com.youphye.usercenter.common.Response;
+import com.youphye.usercenter.common.ResponseCode;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -47,5 +50,10 @@ class UserCenterApplicationTests {
 //		readonly final  Integer[] list = new Integer[]{1,2};
 //		list[0]  = 3;
 		assertTrue(true);
+	}
+	@Test
+	public void test3(){
+		System.out.println(JSONUtil.toJsonStr(new Response<>()));
+
 	}
 }

@@ -58,7 +58,7 @@ public class UserController {
 	 * @return Response<ResponseUser> 返回对象
 	 * @Description 用户查询。根据账号查询单个用户，需要管理员权限。
 	 */
-	@GetMapping("/{userAccount}")
+	@GetMapping("/select/{userAccount}")
 	public Response<ResponseUser> selectOne(@PathVariable Long userAccount) {
 		User user = userService.selectOne(userAccount);
 		ResponseUser responseUser = ResponseUser.create(user);
@@ -69,7 +69,7 @@ public class UserController {
 	 * @return Response<List < ResponseUser>> 包含用户对象列表的返回对象
 	 * @Description 查询全部用户。返回所有用户，需要管理员权限。
 	 */
-	@GetMapping
+	@GetMapping("/selectAll")
 	public Response<List<ResponseUser>> selectAll() {
 		List<User> userList = userService.selectAll();
 		List<ResponseUser> responseUserList = new ArrayList<>();
@@ -84,7 +84,7 @@ public class UserController {
 	 * @return JWTResponse 携带JWT令牌和User对象的返回对象
 	 * @Description 修改用户。修改需要重新生成JWT令牌并返回JWT令牌以及User对象
 	 */
-	@PutMapping
+	@PutMapping("/modify")
 	public JWTResponse modify(@RequestBody ResponseUser responseUser) {
 		User modifiedUser = userService.modify(User.create(responseUser));
 		ResponseUser modifiedResponseUser = ResponseUser.create(modifiedUser);
@@ -96,7 +96,7 @@ public class UserController {
 	 * @return Response 返回对象
 	 * @Description 删除用户。用户自己可以删除自己的账号。从JWT令牌中解析数据。
 	 */
-	@DeleteMapping
+	@DeleteMapping("/delete")
 	public Response delete(@RequestHeader(MyConstant.TOKEN) String token) {
 		JWTData jwtData = MyJWTUtil.verify(token);
 		userService.delete(jwtData.getUserAccount());
@@ -109,12 +109,12 @@ public class UserController {
 	 * @Description 删除所有列表中用户。需要管理员权限。
 	 */
 	@DeleteMapping("/deleteAll")
-	public Response deleteAll(List<Long> userAccountList) {
+	public Response deleteAll(@RequestParam List<Long> userAccountList) {
 		userService.deleteAll(userAccountList);
 		return Response.success(ResponseCode.DELETE_SUCCESS);
 	}
-	@PostMapping("/banAll")
-	public Response banAll(List<Long> userAccountList){
+	@PutMapping("/banAll")
+	public Response banAll(@RequestParam List<Long> userAccountList){
 		userService.banAll(userAccountList);
 		return Response.success(ResponseCode.BAN_SUCCESS);
 	}

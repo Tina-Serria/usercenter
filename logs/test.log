@@ -1,0 +1,5 @@
+[Eran]2023-05-23 15:12:17,464 [http-nio-8080-exec-3 36] ERROR >> Failed to convert value of type 'java.lang.String' to required type 'java.lang.Long'; nested exception is java.lang.NumberFormatException: For input string: "100000a" >> c.y.u.e.GlobalExceptionHandler
+[Eran]2023-05-23 15:12:42,883 [restartedMain 55] INFO >> Starting UserCenterApplication using Java 11.0.2 on Youphye with PID 8752 (E:\IDEA\user-center\target\classes started by Tina Serria in E:\IDEA\user-center) >> c.y.u.UserCenterApplication
+[Eran]2023-05-23 15:12:42,884 [restartedMain 631] INFO >> No active profile set, falling back to 1 default profile: "default" >> c.y.u.UserCenterApplication
+[Eran]2023-05-23 15:12:45,678 [restartedMain 61] INFO >> Started UserCenterApplication in 3.188 seconds (JVM running for 4.689) >> c.y.u.UserCenterApplication
+[Eran]2023-05-23 15:12:49,436 [http-nio-8080-exec-2 36] ERROR >> Failed to convert value of type 'java.lang.String' to required type 'java.lang.Long'; nested exception is java.lang.NumberFormatException: For input string: "100000a" >> c.y.u.e.GlobalExceptionHandler

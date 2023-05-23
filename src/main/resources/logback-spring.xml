@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 一般根节点不需要写属性了，使用默认的就好 -->
+<configuration>
+    <!--url:https://juejin.cn/post/7140889233647992862-->
+    <contextName>user-center</contextName>
+
+    <!-- 该变量代表日志文件存放的目录名 -->
+    <property name="log.dir" value="logs"/>
+    <!-- 该变量代表日志文件名 -->
+    <property name="log.name" value="test.log"/>
+
+    <!--定义一个将日志输出到控制台的appender，名称为STDOUT -->
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>[Eran]%date [%thread %line] %level >> %msg >> %logger{10}%n</pattern>
+        </encoder>
+    </appender>
+
+    <!--定义一个将日志输出到文件的appender，名称为FILE_LOG -->
+    <appender name="FILE_LOG" class="ch.qos.logback.core.FileAppender">
+        <file>${log.dir}/test.log</file>
+        <append>true</append>
+        <encoder>
+            <pattern>[Eran]%date [%thread %line] %level >> %msg >> %logger{10}%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- 指定com.demo包下的日志打印级别为INFO，但是由于没有引用appender，所以该logger不会打印日志信息，日志信息向上传递 -->
+    <logger name="com.youphye" level="WARN"/>
+
+    <!-- 指定最基础的日志输出级别为DEBUG，并且绑定了名为STDOUT的appender，表示将日志信息输出到控制台 -->
+    <root level="INFO">
+        <appender-ref ref="STDOUT"/>
+    </root>
+</configuration>

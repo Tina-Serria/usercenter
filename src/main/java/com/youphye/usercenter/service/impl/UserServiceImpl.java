@@ -89,7 +89,11 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 	public User selectOne(Long userAccount) {
 		LambdaQueryWrapper<User> lambdaQueryWrapper = new LambdaQueryWrapper<>();
 		lambdaQueryWrapper.eq(User::getUserAccount, userAccount);
-		return this.getOne(lambdaQueryWrapper);
+		User user = this.getOne(lambdaQueryWrapper);
+		if (user == null) {
+			throw new BusinessException(ResponseCode.USER_NOT_EXISTS);
+		}
+		return  user;
 	}
 
 
@@ -122,7 +126,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 	/**
 	 * @param lambdaUpdateWrapper 需要拼接的Wrapper
 	 * @param user                需要更新的用户
-	 * @return LambdaUpdateWrapper<User>
 	 * @Description 将user用户可以自定义的非空字段拼接到Wrapper中
 	 */
 	private void spliceWrapper(LambdaUpdateWrapper<User> lambdaUpdateWrapper, User user) {

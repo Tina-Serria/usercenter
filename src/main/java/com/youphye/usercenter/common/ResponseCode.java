@@ -12,12 +12,13 @@ public enum ResponseCode implements MyEnum {
 	REGISTER_SUCCESS(40001, "注册成功", "注册成功"),
 	LOGIN_SUCCESS(40002, "登录成功", "登录成功"),
 	SELECT_SUCCESS(40003, "查询成功", "查询成功"),
-	DELETE_SUCCESS(40004, "注销成功", "删除成功"),
+	DELETE_SUCCESS(40004, "注销成功", "注销成功"),
 	MODIFY_SUCCESS(40005, "修改成功", "修改成功"),
-	BAN_SUCCESS(40006,"封禁成功","封禁成功"),
+	BAN_SUCCESS(40006, "封禁成功", "封禁成功"),
 
-	PARAM_NULL(40000, "操作失败", "输入不能为空"),
-
+	PARAM_NULL(410001, "操作失败", "输入不能为空"),
+	IDENTIFY_EXPIRED(41002, "登录过期", "登录过期，请重新登录"),
+	PERMISSION_DENIED(41003, "权限不足", "没有权限执行此操作"),
 	/*
 		注册失败
 	 */
@@ -29,13 +30,12 @@ public enum ResponseCode implements MyEnum {
 		登录失败
 	 */
 	LOGIN_FAILED(40201, "登录失败", "账号或密码错误"),
-	IDENTIFY_EXPIRED(40202, "登录过期", "登录过期，请重新登录"),
-	PERMISSION_DENIED(40203, "权限不足", "没有权限执行此操作"),
+
 
 	/*
 		查询失败
 	 */
-
+	USER_NOT_EXISTS(40301, "查询失败", "不存在该用户"),
 	/*
 		注销失败
 	 */
@@ -49,7 +49,7 @@ public enum ResponseCode implements MyEnum {
 	/*
 		封禁账号
 	 */
-	BAN_FAILED(40601,"封禁失败","封禁失败"),
+	BAN_FAILED(40601, "封禁失败", "封禁失败"),
 	SYSTEM_ERROR(50100, "系统异常", "网络环境异常");
 	private final Integer code;
 	private final String message;

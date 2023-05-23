@@ -26,5 +26,8 @@ public class MyConstant {
 
 	public static final String TOKEN = "token";
 	public static final String ALL = "all";
+	public static final String SELECT = "select";
+	public static final String CHARSET = "UTF-8";
+	public static final String CONTENT_TYPE = "application/json;charset=UTF-8";
 
 }

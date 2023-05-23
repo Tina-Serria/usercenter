@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 /**
  * @ClassName: GlobalExceptionHandler
  * @Package: com.youphye.usercenter.exception
- * @Description:
+ * @Description: 全局异常处理器，分为业务异常和系统异常。
  * @Author Tina Serria
  * @Create 2023/5/15 22:40
  * @Version 1.0
@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @Slf4j
 public class GlobalExceptionHandler {
 	/**
-	 * @param businessException 业务失败抛出的异常
+	 * @param businessException 业务异常
 	 * @return Response
 	 * @Description 业务失败，返回对应的错误对象
 	 */
@@ -33,7 +33,6 @@ public class GlobalExceptionHandler {
 	 */
 	@ExceptionHandler(RuntimeException.class)
 	public Response runtimeExceptionHandler(RuntimeException runtimeException) {
-		log.error(runtimeException.getMessage());
 		return Response.error();
 	}
 }

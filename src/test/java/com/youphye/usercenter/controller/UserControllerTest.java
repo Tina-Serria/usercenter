@@ -2,6 +2,7 @@ package com.youphye.usercenter.controller;
 
 import com.youphye.usercenter.common.JWTResponse;
 import com.youphye.usercenter.common.Response;
+import com.youphye.usercenter.common.ResponseUser;
 import com.youphye.usercenter.pojo.User;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -50,14 +51,14 @@ public class UserControllerTest {
 
 	@Test
 	public void selectOne() {
-		Response<User> userResponse = userController.selectOne(100001L);
+		Response<ResponseUser> userResponse = userController.selectOne(100001L);
 		System.out.println(userResponse.getData());
 		assertTrue(true);
 	}
 
 	@Test
 	public void selectAll() {
-		Response<List<User>> userListResponse = userController.selectAll();
+		Response<List<ResponseUser>> userListResponse = userController.selectAll();
 		System.out.println(userListResponse.getData());
 		assertTrue(true);
 	}
@@ -67,7 +68,7 @@ public class UserControllerTest {
 		User user = new User();
 		user.setUserName("Christina");
 		user.setUserAccount(100004L);
-		JWTResponse modify = userController.modify(user);
+		JWTResponse modify = userController.modify(ResponseUser.create(user));
 		System.out.println(modify);
 		assertTrue(true);
 	}

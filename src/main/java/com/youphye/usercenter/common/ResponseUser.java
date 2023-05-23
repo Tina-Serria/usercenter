@@ -2,6 +2,7 @@ package com.youphye.usercenter.common;
 
 import com.youphye.usercenter.pojo.User;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * @ClassName: ResponseUser
@@ -12,6 +13,7 @@ import lombok.Data;
  * @Version 1.0
  */
 @Data
+@NoArgsConstructor
 public class ResponseUser {
 	/**
 	 * 账号
