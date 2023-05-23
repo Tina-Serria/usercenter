@@ -4,9 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 
-import com.youphye.usercenter.common.ResponseCode;
-import com.youphye.usercenter.common.MyConstant;
-import com.youphye.usercenter.common.StatusCode;
+import com.youphye.usercenter.common.*;
 import com.youphye.usercenter.exception.BusinessException;
 import com.youphye.usercenter.pojo.User;
 import com.youphye.usercenter.service.UserService;
@@ -58,6 +56,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 		}
 		user.setUserName(userName);
 		user.setUserPassword(UserDataUtil.md5(userPassword));
+		user.setUserGender(GenderCode.MAN.getCode());
+		user.setUserRole(RoleCode.USER.getCode());
 		// 向数据库写入用户
 		this.save(user);
 		// 返回
