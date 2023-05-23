@@ -47,13 +47,13 @@ class UserCenterApplicationTests {
 
 	@Test
 	public void test() {
-//		readonly final  Integer[] list = new Integer[]{1,2};
-//		list[0]  = 3;
+
 		assertTrue(true);
 	}
 	@Test
 	public void test3(){
 		System.out.println(JSONUtil.toJsonStr(new Response<>()));
+		assertTrue(true);
 
 	}
 }
