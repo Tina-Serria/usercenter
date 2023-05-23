@@ -19,9 +19,9 @@ public class JWTData {
 	private String userName;
 	private Long userAccount;
 	private Integer userRole;
-	public JWTData(User user){
-		this.userName = user.getUserName();
-		this.userAccount = user.getUserAccount();
-		this.userRole = user.getUserRole();
+	public JWTData(ResponseUser responseUser){
+		this.userName = responseUser.getUserName();
+		this.userAccount = responseUser.getUserAccount();
+		this.userRole = responseUser.getUserRole();
 	}
 }

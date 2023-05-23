@@ -6,13 +6,16 @@ import com.baomidou.mybatisplus.annotation.*;
 import java.io.Serializable;
 import java.util.Date;
 
+import com.youphye.usercenter.common.ResponseUser;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * @TableName user
  */
 @TableName(value = "user")
 @Data
+@NoArgsConstructor
 public class User implements Serializable {
 	/**
 	 * 主键
@@ -80,4 +83,16 @@ public class User implements Serializable {
 
 	@TableField(exist = false)
 	private static final long serialVersionUID = 1L;
+	public User(ResponseUser responseUser){
+		this.userAccount = responseUser.getUserAccount();
+		this.userName = responseUser.getUserName();
+		this.userGender = responseUser.getUserGender();
+		this.userEmail = responseUser.getUserEmail();
+		this.userPhone = responseUser.getUserPhone();
+		this.userStatus = responseUser.getUserStatus();
+		this.userRole = responseUser.getUserRole();
+	}
+	public static User create(ResponseUser responseUser){
+		return new User(responseUser);
+	}
 }

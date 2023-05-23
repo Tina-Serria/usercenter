@@ -14,15 +14,15 @@ import lombok.EqualsAndHashCode;
  */
 @EqualsAndHashCode(callSuper = true)
 @Data
-public class JWTResponse extends Response<User> {
+public class JWTResponse extends Response<ResponseUser> {
 	private String jwt;
 
-	public JWTResponse(ResponseCode responseCode, User data, String jwt) {
+	public JWTResponse(ResponseCode responseCode, ResponseUser data, String jwt) {
 		super(responseCode, data);
 		this.jwt = jwt;
 	}
 
-	public static JWTResponse success(ResponseCode responseCode, User data, String jwt) {
+	public static JWTResponse success(ResponseCode responseCode, ResponseUser data, String jwt) {
 		return new JWTResponse(responseCode, data, jwt);
 	}
 }

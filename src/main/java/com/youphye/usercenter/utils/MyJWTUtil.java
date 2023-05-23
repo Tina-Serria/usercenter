@@ -7,10 +7,7 @@ import cn.hutool.jwt.JWTUtil;
 import cn.hutool.jwt.JWTValidator;
 import cn.hutool.jwt.signers.JWTSigner;
 import cn.hutool.jwt.signers.JWTSignerUtil;
-import com.youphye.usercenter.common.JWTData;
-import com.youphye.usercenter.common.MyConstant;
-import com.youphye.usercenter.common.ResponseCode;
-import com.youphye.usercenter.common.RoleCode;
+import com.youphye.usercenter.common.*;
 import com.youphye.usercenter.exception.BusinessException;
 import com.youphye.usercenter.pojo.User;
 
@@ -28,12 +25,12 @@ public class MyJWTUtil {
 	private static final JWTSigner jwtSigner = JWTSignerUtil.hs256(MyConstant.SALT.getBytes());
 
 	/**
-	 * @param user 用户对象
+	 * @param responseUser 用户对象
 	 * @return String JWT令牌字符串
 	 * @Description 根据账号和用户类型生成JWT令牌
 	 */
-	public static String create(User user) {
-		JWTData jwtData = new JWTData(user);
+	public static String create(ResponseUser responseUser) {
+		JWTData jwtData = new JWTData(responseUser);
 		return JWT.create()
 				.setExpiresAt(new Date(System.currentTimeMillis() + MyConstant.TIMEOUT))
 				.setPayload(MyConstant.JWT_DATA,JSONUtil.toJsonStr(jwtData))
